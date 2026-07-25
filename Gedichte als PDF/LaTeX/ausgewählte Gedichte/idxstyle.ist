@@ -1,0 +1,14 @@
+headings_flag 1
+
+heading_prefix "\n\\begin{minipage}{\\linewidth}\n\\large "
+heading_suffix " \\par\n\\normalsize"
+group_skip "\n\\end{minipage}\n\n  \\indexspace\n"
+postamble "\n\\end{minipage}\n\n\\end{theindex}\n"
+
+
+%todo: Ü
+%todo: !
+%todo: entwurf
+%todo: minipage per letter
+
+{\linewidth}
