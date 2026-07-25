@@ -1,1 +1,4 @@
 compiled with pdfLaTeX
+
+compile at least twice for TOC
+and don't forget to makeindex
