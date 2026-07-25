@@ -1,0 +1,273 @@
+\documentclass[a4paper,12pt,twoside]{book}
+
+%\usepackage{microtype}
+%\usepackage[protrusion=false]{microtype}
+\usepackage[ngerman]{babel}
+%\usepackage[frenchb]{babel}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{graphicx}
+%\usepackage{fontspec} %requires XeLaTeX or LuaLaTeX
+%\setmainfont{Andron Scriptor}
+\usepackage[a4paper,left=39mm,right=40mm,top=35mm,bottom=35mm]{geometry}
+\usepackage{datetime}
+%\usepackage{datetime2}
+\usepackage{xcolor}
+\usepackage{longtable}
+\usepackage{ragged2e}
+\usepackage{changepage}
+\usepackage{fancyhdr}
+\usepackage{tocloft}
+\usepackage{titlesec}
+\usepackage{etoolbox} %used to make page number disappear for part-pages:
+\patchcmd{\part}{plain}{empty}{}{}
+%\usepackage{makeidx}
+%\makeindex
+\usepackage{imakeidx}
+\makeindex[options= -s idxstyle.ist]
+\usepackage{idxlayout}
+%\usepackage{sanitize-umlaut}
+\usepackage{graphicx}
+\graphicspath{ {./img/} }
+\usepackage{caption}
+
+
+\setlength\parindent{2em}
+
+\makeatletter
+\renewcommand\@idxitem{\par\hangindent 1em}
+\makeatother
+
+\idxlayout{
+  columns=1,
+  justific=raggedright
+}
+%todo: add letters as group headings
+%todo: make umlaute be sorted like normal letters: https://texwelt.de/fragen/15923/sonderzeichen-im-index
+
+
+%set whole document to texttt font
+\renewcommand{\familydefault}{cmtt}
+\renewcommand{\rmdefault}{cmtt}
+\renewcommand{\sfdefault}{cmtt}
+\renewcommand{\bfdefault}{m}
+\renewcommand{\itdefault}{n}
+\renewcommand{\sldefault}{n}
+\renewcommand{\scdefault}{n}
+
+
+%\titlespacing*{\chapter}{left space}{vertical space before title}{vertical space after title}
+%\titlespacing*{\chapter}{0em}{vertical space before title}{vertical space after title}
+%\titlespacing*{\chapter}{100pt}{100pt}{100pt}
+%\titleformat
+%{\chapter} % command
+%[display] % shape
+%{\bfseries\Large} % format
+%{Story No. \ \thechapter} % label
+%{} % sep
+%{
+%    \vspace{-3em}
+%    \rule{\textwidth}{1pt}
+%    \vspace{0em}
+%    \centering
+%} % before-code
+%[
+%\vspace{-0.5em}%
+%\rule{\textwidth}{1pt}
+%] % after-code
+
+%\titleformat{\part}[display]{\bfseries\Large}{}{0em}{\clearpage\cleardoublepage}[]
+
+%\titleformat{\chapter}[display]{\bfseries\huge}{}{0em}{\vspace{-2em}}[]
+%\titleformat{\chapter}[display]{\bfseries\huge}{}{0em}{\vspace{-1em}}[\vspace{-0.5em}]
+%\titleformat{\chapter}[display]{\bfseries\huge}{}{0em}{\vspace{-2em}\begin{flushright}}[\end{flushright}\vspace{-0.5em}]
+\titleformat{\chapter}[display]{\bfseries\huge}{}{0em}{\begin{flushright}}[\end{flushright}]
+
+%\titleformat{\section}[display]{\bfseries\Large}{}{0em}{\vspace{-1.2em}\thesection\hspace{1em}}[\vspace{-0em}]
+%\titleformat{\section}[display]{\bfseries\Large}{}{0em}{\vspace{0em}\thesection\hspace{1em}}[\vspace{-0em}]
+%\titleformat{\section}[display]{\bfseries\Large}{}{0em}{\vspace{-1.2em}\thesection\\[0.2em]}[\vspace{-0em}]
+%\titleformat{\section}[display]{\bfseries\Large}{}{0em}{\vspace{0em}\thesection\\[0.2em]}[\vspace{-0em}]
+%\titleformat{\section}[display]{\bfseries\Large}{}{0em}{\vspace{0em}\begin{minipage}{\linewidth}\thesection\\[0.2em]}[\end{minipage}\vspace{-0em}]
+%\titleformat{\section}[display]{\bfseries\Large}{}{0em}{\vspace{-10em}\clearpage\phantom{a}\\[-0.7em]}[]
+%\titleformat{\section}[display]{\bfseries\Large}{}{0em}{\vspace{-10em}\clearpage\phantom{a}\\[-0.7em]\begin{minipage}{\linewidth}}[\end{minipage}]
+\titleformat{\section}[display]{\bfseries\Large}{}{0em}{\phantom{a}\\[-1.7em]\begin{minipage}{\linewidth}}[\end{minipage}]
+\let\oldsection\section
+\RenewDocumentCommand{\section}{s o m}{%
+  \vspace{-10em}\clearpage%
+  \IfBooleanTF{#1}
+    {% starred version
+        \phantom{a}\\[-2.7em]
+        \oldsection*{#3}
+    }
+    {% normal version
+      \IfNoValueTF{#2}
+        {\oldsection{#3}}
+        {\oldsection[#2]{#3}}%
+      \index{#3}%
+    }%
+}
+\newcommand{\sectionwithoutindex}[1]{%
+  \vspace{-10em}\clearpage%
+  \oldsection{#1}%
+}
+
+%\titleformat{<command>}[<shape>]{<format>}{<label>}{<sep>}{<before-code>}[<after-code>]
+
+\newenvironment{langerversl}{\begin{adjustwidth}{4mm}{}}{\end{adjustwidth}}
+
+%\newcommand{\vers}[1]{\noindent{\texttt{#1}}\\[0em]}
+\newcommand{\vers}[1]{{#1}\\[0.3em]}
+\newcommand{\longvers}
+ [3]
+ %arg1: text that will fit in one line
+ %arg2: first line
+ %arg3: rest of text
+ {
+ \begin{minipage}{\widthof{#1}}
+ \begin{flushleft}#2\end{flushleft}\vspace{-1.8em}
+ \begin{flushright}#3\end{flushright}
+ \end{minipage}\\[0.7em]
+ }
+\newcommand{\twolinevers}
+[2]
+%arg1: text der in zeile 1 soll
+%arg2: text der in zeile 2 soll
+{
+\vers{#1}
+\vers{\phantom{-2-4-6-8}#2}
+}
+
+
+\newenvironment{strophe}
+{\noindent\begin{minipage}{\linewidth}\phantom{a}\\[0em]}
+{\end{minipage}\phantom{a}\\[0em]}
+
+
+
+% !!!!!!!!!!!!!!!!!!!!!!!!!!
+% !!! Do before printing !!! switch to XeLaTeX
+% !!!!!!!!!!!!!!!!!!!!!!!!!!
+% use these instead of ›‹»«, if using pdfLaTeX
+% please use XeLaTeX instead of pdfLaTeX for this reason.
+\newcommand{\frquotl}{\scalebox{0.5}[1]{›}}
+\newcommand{\frquotr}{\scalebox{0.5}[1]{‹}}
+\newcommand{\frquotll}{\scalebox{0.5}[1]{»}}
+\newcommand{\frquotrr}{\scalebox{0.5}[1]{«}}
+
+\newcommand{\ttspace}{\hspace{0.5em}}
+\newcommand{\ttspaceneg}{\hspace{-0.5em}}
+
+%\newcommand{\ttquotl}{\hspace{0.020833em}\glqq\hspace{0.020833em}}
+\newcommand{\ttquotl}{\glqq\hspace{0.020833em}\hspace{0.020833em}}
+\newcommand{\ttquotr}{\rotatebox[origin=c]{180}{\phantom{A}\ttquotl}\ttspaceneg}
+%todo: make other punctuation mono if encountered
+%todo: apparently    "\hspace{0em}    works as well, try and see if it is
+%      aligned vertically with \ttquotl when written below another in two verses
+%      - but the thick part is above the thin part in the quotation marks, so
+%        i think i prefer \ttquotr anyways
+
+\cftsetindents{chapter}{0em}{5em}
+\cftsetindents{section}{1.6625em}{4.5em}
+
+
+
+\title{
+\bf{Sämtliche Gedichte}
+%\\ \textmd{\textsc{Bernardo}} \textmd{Szenen}
+%\\ \color{gray}\textmd{Ohne Gestrichenes}
+}
+\author{Christoph Koloska}
+%the following uses computer time(-zone):
+%\date{\small \color{gray} Version vom: \today\ \currenttime minus 7h}
+%therefore:
+\date{}
+
+%\titleformat{\chapter}[display]{}{}{0pt}{}
+
+\begin{document}
+
+%\raggedright
+
+\frontmatter
+\pagestyle{empty}
+
+\maketitle
+\cleardoublepage
+
+\vspace*{\fill}
+%\begin{center}
+\begin{figure}[h]
+\centering
+\makebox[\textwidth][c]{%
+  \includegraphics[width=1.0\textwidth]{Das Monster namens Noisserped}%
+}
+\caption*{Das Monster namens Noisserped}
+\end{figure}
+%\end{center}
+\vspace*{\fill}
+
+\cleardoublepage
+%\clearpage
+%\thispagestyle{empty}
+%\phantom{a}
+%\clearpage
+%\thispagestyle{empty}
+
+%\phantom{a}
+%\clearpage
+\pagestyle{plain}
+\phantom{a}\\[-2em]
+\tableofcontents
+
+\clearpage
+\thispagestyle{empty}
+\phantom{a}
+\clearpage
+\thispagestyle{empty}
+
+\mainmatter
+\pagestyle{empty}
+
+\newcounter{ctryear}
+\newcounter{ctrpoeminyear}
+\setcounter{ctryear}{0}
+\setcounter{ctrpoeminyear}{0}
+
+\pagestyle{fancy}
+\fancyhead[LE,RO]{\thepage}
+%\fancyhead[CE]{\arabic{ctryear} -- Gedicht \arabic{ctrpoeminyear}}
+%\fancyhead[CO]{\arabic{ctryear} -- Gedicht \arabic{ctrpoeminyear}}
+%\fancyhead[RE]{\arabic{ctryear}. Gedicht \arabic{ctrpoeminyear}}
+%\fancyhead[LO]{\arabic{ctryear}. Gedicht \arabic{ctrpoeminyear}}
+\fancyhead[RE]{\arabic{ctryear}.\arabic{ctrpoeminyear}}
+\fancyhead[LO]{\arabic{ctryear}.\arabic{ctrpoeminyear}}
+\fancyfoot{}
+
+%\pagenumbering{gobble}
+\pagenumbering{arabic}
+\part{Kindheit}
+\include{2018}
+
+\part{Jugend}
+\include{2019}
+\include{2020}
+
+\part{Junges Erwachsenenalter}
+\include{2021}
+\fancyhead[LO,RE]{\arabic{ctryear}.\arabic{ctrpoeminyear}}
+\include{2022}
+
+\part{Erwachsenenalter}
+\include{2025}
+\include{2026}
+
+\clearpage
+\thispagestyle{empty}
+\phantom{a}
+\clearpage
+\thispagestyle{empty}
+
+\pagestyle{plain}
+\printindex
+
+\end{document}
